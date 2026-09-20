@@ -4,7 +4,7 @@ Async-first Python SDK for [Citizen](https://citizen.com)'s **public, unauthenti
 
 Reverse-engineered from Citizen Android `0.1308.0` (`sp0n.citizen`, build 1140). Every endpoint implemented here was verified reachable without an access token.
 
-> **Disclaimer:** Unofficial SDK, not affiliated with Citizen. The endpoints are undocumented and may change or become restricted at any time. Use politely — keep request rates low, cache aggressively, and honor the rate limiter defaults.
+> **Status: experimental.** Unofficial SDK, not affiliated with Citizen. The endpoints are undocumented and may change or become restricted at any time. Use politely — keep request rates low, cache aggressively, and honor the rate limiter defaults.
 
 ## Features
 

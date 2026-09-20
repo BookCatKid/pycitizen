@@ -34,7 +34,7 @@
 | WebSocket | `org.java_websocket` client (`p000.u9h` = WebSocketClient, `p000.h75` = Draft) | `SocketConnection` → `SocketConnection2` (Rx) and `SocketConnectionFlow` (coroutines) |
 | Push | FCM → `CitizenFirebaseMessagingService` → `MessageReceivedUseCase` (`p000.paa`) → `ShowNotificationUseCase` (`p000.soe`); Iterable SDK handled first | |
 | Maps | Mapbox Maps SDK v10 (`com.mapbox.maps.MapView`); incident layer = vector source `all_incidents` with `tiles: [incidentTileURL]` | `sp0n.citizen.safetyhome.C6649s` |
-| Analytics | Segment (`writeKey uPST0q1xNVgVHdlOlfrKP6KVZBBol9OW`) proxied to `https://metrics.sp0n.io`; AppsFlyer; Iterable (`api.iterable.com`); Branch (`api2.branch.io`, key `key_live_iifHS4ebEKe2gR8JBJsM6kkosDjwJbxO`) | `DeviceModule.Companion.provideSegment` |
+| Analytics | Segment (`writeKey uPST0q1x…<redacted>`) proxied to `https://metrics.sp0n.io`; AppsFlyer; Iterable (`api.iterable.com`); Branch (`api2.branch.io`, key `key_live_iifH…<redacted>`) | `DeviceModule.Companion.provideSegment` |
 | Streaming media | Twilio (Protect agent video), Agora/IMS libs present for broadcast video | out of scope |
 | Debug surface | `sp0n.citizen.debug.*` activities incl. `DebugNetworkRequestsActivity` (Flipper-style network log), `DebugNotificationsCreatorActivity` — present but non-exported | |
 
@@ -53,7 +53,7 @@ return new BuildConfigInfo("0.1308.0", 1140,
     "https://data.sp0n.io",                // dataUrl  (REST + tiles)
     "wss://data.sp0n.io/websocket",        // socket2Url
     !StringsKt.m12974z("https://data.sp0n.io", "staging", false), // isProduction
-    "b384d0cf2e5d976b4e6eace837919ed3b80d2057", // clientKey
+    "b384d0cf…<redacted>",                 // clientKey (embedded JWT-signing key)
     "fcmProdAll",                          // notifTopic (FCM topic)
     "citizenProd",                         // flavor
     false);                                // isInstrumentedTest
