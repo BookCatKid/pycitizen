@@ -1,0 +1,116 @@
+I: Using Apktool 3.0.3 on sp0n.citizen.apk with 8 threads
+I: Copying raw classes.dex...
+I: Copying raw classes2.dex...
+I: Copying raw classes3.dex...
+I: Copying raw classes4.dex...
+I: Copying raw classes5.dex...
+I: Loading resource table...
+I: Decoding value resources...
+I: Loading resource table from file: /Users/simon/Library/apktool/framework/1.apk
+I: Decoding file resources...
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0803af, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08016c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08016b, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08027d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08016c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0803d1, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800a7, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08037b, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08032e, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08036d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080362, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080361, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080364, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080363, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0803d0, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800a7, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080383, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800a7, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080104, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080104, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080104, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08010d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800a4, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08005c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08005b, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080056, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080055, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08007d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08007d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080076, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08007c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08007c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080076, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800a7, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0802fb, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08009a, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08009a, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080099, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080269, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800ea, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08007d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08007d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080076, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08010b, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08007c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08007c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080076, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0802f3, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080079, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080077, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080078, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080077, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800a7, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080094, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080104, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08005e, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08005d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08009a, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08008d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080099, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08008d, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08009f, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080089, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080088, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080088, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080105, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08035b, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080085, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080085, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080087, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080086, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080105, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08009b, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08009b, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08009c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08009c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080104, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080104, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080104, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08035b, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800f8, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08016c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800f4, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08016c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08016b, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800ef, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08016c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08035e, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0803d6, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f0800fd, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08016c, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f08016b, type=ref}
+I: Generating values XMLs...
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080075, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080075, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080080, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080075, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080075, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080080, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080050, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080092, type=ref}
+W: Unresolved resource reference: ResReference{pkg=ResPackage{id=0x7f, name=sp0n.citizen}, id=0x7f080068, type=ref}
+I: Decoding AndroidManifest.xml with resources...
+I: Copying original files...
+I: Copying assets...
+I: Copying unknown files...

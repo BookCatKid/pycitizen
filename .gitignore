@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+
+# Reverse-engineering artifacts (large; reproducible from the APK)
+research/jadx-out/
+research/apktool-out/
+research/xapk/
+research/*.xapk
+*.apk
