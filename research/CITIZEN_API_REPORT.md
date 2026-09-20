@@ -13,7 +13,7 @@
   1. **REST/Retrofit** over HTTPS for essentially everything (incident details, feeds, auth, social, chat history, premium "Protect" features).
   2. **A WebSocket** at `wss://data.sp0n.io/websocket` — used **only for chat and Protect (premium agent) sessions**, *not* for the incident feed.
   3. **FCM push notifications** (`sp0n.citizen.services.CitizenFirebaseMessagingService`) — the real-time alerting channel for new incidents.
-* The live incident map is rendered from **Mapbox/MapLibre vector tiles** served unauthenticated at `GET /v1/tile/incidents/{x}/{y}/{z}.pbf` (MVT/protobuf, layer name `incidents`). `[VERIFIED]`
+* The live incident map is rendered from **Mapbox vector tiles** (Mapbox Maps SDK v10, `com.mapbox.maps.MapView`) served unauthenticated at `GET /v1/tile/incidents/{x}/{y}/{z}.pbf` (MVT/protobuf, layer name `incidents`). `[VERIFIED]`
 * **Large parts of the read API require no credentials at all** — verified by direct requests: incident details (`v1/v2/v3 incident`), batch fetch, related incidents, map sources, service-area discovery, homescreen status v1, safety geocoding, the `v2/news/feed`, the variable-settings bootstrap, and the incident vector tiles. `[VERIFIED]`
 * Endpoints that drive personalized state (`v3/homescreen/mapIncidents`, `v2/homescreen/status`, `v1/homescreen/feed`, `v1/search`, `v1/variable_settings`, `v1/users/nearby`, `v1/friends/*`, notifications, chat, reporting) return `401 {"error":"invalid token supplied"}` or `{"error":"access token missing"}` without an `x-access-token`. `[VERIFIED]`
 * Auth is phone-number OTP (or Google sign-in) exchanging a code for a long-lived `userToken` sent as the `x-access-token` header on every request. `[CODE + VERIFIED shape]`
@@ -33,7 +33,7 @@
 | REST | Retrofit (`p000.kdd`), Gson converter (`f57`) for most APIs; kotlinx-serialization (`ay5`/`fce`) for the "coroutine" Retrofit | Return type is a custom `NetworkResult` (`p000.oya`) |
 | WebSocket | `org.java_websocket` client (`p000.u9h` = WebSocketClient, `p000.h75` = Draft) | `SocketConnection` → `SocketConnection2` (Rx) and `SocketConnectionFlow` (coroutines) |
 | Push | FCM → `CitizenFirebaseMessagingService` → `MessageReceivedUseCase` (`p000.paa`) → `ShowNotificationUseCase` (`p000.soe`); Iterable SDK handled first | |
-| Maps | Mapbox Maps SDK; incident layer = vector source `all_incidents` with `tiles: [incidentTileURL]` | `sp0n.citizen.safetyhome.C6649s` |
+| Maps | Mapbox Maps SDK v10 (`com.mapbox.maps.MapView`); incident layer = vector source `all_incidents` with `tiles: [incidentTileURL]` | `sp0n.citizen.safetyhome.C6649s` |
 | Analytics | Segment (`writeKey uPST0q1xNVgVHdlOlfrKP6KVZBBol9OW`) proxied to `https://metrics.sp0n.io`; AppsFlyer; Iterable (`api.iterable.com`); Branch (`api2.branch.io`, key `key_live_iifHS4ebEKe2gR8JBJsM6kkosDjwJbxO`) | `DeviceModule.Companion.provideSegment` |
 | Streaming media | Twilio (Protect agent video), Agora/IMS libs present for broadcast video | out of scope |
 | Debug surface | `sp0n.citizen.debug.*` activities incl. `DebugNetworkRequestsActivity` (Flipper-style network log), `DebugNotificationsCreatorActivity` — present but non-exported | |
@@ -226,11 +226,51 @@ locate device
       GET v3/homescreen/mapIncidents?serviceAreaCode=<code>&active_definition=state_based
                                                   (SafetyHomeIncidentsRepository.getIncidentsInArea)
       → {incidents:[IncidentMarkerStub…], inactiveIncidents:[…], incidentTimeFrame:int}
-  → MapLibre vector source "all_incidents": tiles [https://data.sp0n.io/v1/tile/incidents/{x}/{y}/{z}.pbf]
+  → Mapbox vector source "all_incidents": tiles [https://data.sp0n.io/v1/tile/incidents/{x}/{y}/{z}.pbf]
       (MapFiltersV2Config.incidentTileURL — remotely configurable via variable settings)
 ```
 
 `loadServiceAreasForMapBounds` is driven by map movement and by `status` changes (`serviceAreas` StateFlow); each new service-area set triggers `loadIncidentsForServiceArea`. There is no client-side timer loop for `mapIncidents` — freshness comes from (a) tile refetches as the map moves/zooms, (b) status reload on location change / foreground (`loadStatusForUserLocationIfNeeded(location, refresh)`), and (c) FCM pushes prompting the user back into the app. `[CODE]` — no periodic feed poller was found for the map feed; `incidentPollingInterval` (variable setting) is used by `BroadcastRepository` for broadcast/live-stream state, not the incident list.
+
+#### 8.1.1 Map tile refresh mechanics — does the app poll? `[VERIFIED — static analysis + live headers]`
+
+**No application-level timer exists for map incident tiles.** Exhaustive search of `safetyhome/` and `data/safetyhome4/` finds no `delay()`, `Timer`, `postDelayed`, ticker flow, or `while(true)` loop feeding tile requests. The map is a `com.mapbox.maps.MapView` (Mapbox Maps SDK v10 — **not** MapLibre; base class `p000/a01.java` creates the `MapView`).
+
+The incident layer is vector source **`all_incidents`** whose `tiles` property is set to a single URL built by `C6655y.m19411r(set, iv9, zoom)`:
+
+```
+{incidentTileURL}?incident_category=<cat>…&incident_created_at_gte=<ISO>
+                 &incident_created_at_lte=<ISO>&limit=<n>
+                 &with_lifecycle_state=true&active_definition=state_based
+```
+
+* `incident_category` — one entry per active category filter (empty = all).
+* `incident_created_at_gte/lte` — **only present when a date filter is active**; a calendar-day window (local midnight→midnight via `OffsetDateTime`).
+* `limit` — per-zoom cap from `MapFiltersV2Config.limitForZoom(zoom)`; recomputed when the camera's zoom band changes.
+* `with_lifecycle_state=true&active_definition=state_based` — always appended by the app. Verified live to be a **no-op** on tile content (identical bytes with/without); `limit` and `incident_category` do change tile content.
+
+**URL application — every call site of the update function `t38.m19806s(url)` is enumerated:**
+
+| Trigger | Site | Effect |
+|---|---|---|
+| Initial style build | `C6649s` ≈l.2907/3802 (`new ptg("all_incidents")` + `map.put("tiles", …)` + `mo413a(style)`) | source created with the URL |
+| Camera-move end | `C6649s` l.797, l.869, l.942 — inside the map-location emitters that also fire `loadServiceAreasForMapBounds`, `onMapMoved`, `panned_homescreen_map` analytics | URL rebuilt with current zoom → `m19806s` |
+| Filter-state change | `C6654x` l.125 — flow collector on `Pair<Set<category>, dateFilter>` | URL rebuilt → `m19806s` |
+
+`m19806s` (`p000/t38.java:769`) **early-returns if the URL string is unchanged**; otherwise it calls `MapboxStyleManager.setStyleSourceProperty("all_incidents", "tiles", [url])` (`p000/n1f.java:132` → `NativeMapImpl`/`StyleManager` native call), which re-requests all visible tiles for the new URL.
+
+**Freshness floor — HTTP caching `[VERIFIED live]`:** incident tile responses carry `Cache-Control: public, max-age=60` through Varnish/Google CDN. The Mapbox native tile loader honors HTTP expiry: tiles past `max-age` are re-requested (with revalidation) during its tile-update passes. So while the map is visible, viewport tiles are effectively re-fetched on ~60-second expiry — a **cache-driven refresh, not an app timer**. There is no explicit cache-buster, no `volatile`/`refreshInterval` source option, and no `reloadSource`/`invalidateTile` call in the app.
+
+**Aging is also client-side:** layer filters embed `System.currentTimeMillis()` literals (`C6649s` l.3702/3823 via `t38.m19796n`) and `maxAgeInHoursByZoomLevel` thresholds (l.3540–3547), so over-age incidents are hidden by style expressions even if still present in the tile.
+
+**Not refresh triggers (verified negative):**
+
+* **FCM** — `CitizenFirebaseMessagingService.onMessageReceived` → `MessageReceivedUseCase` (`p000/paa.m16188a`) touches `BroadcastRepository` (only while broadcasting), `RelationshipRepository.refreshFriendsData`, `IncidentsRepository.markIncidentAsGlobal`, `EducationRepository` — **nothing map-related**.
+* **WebSocket** — chat/Protect subscriptions only (§6); no incident-map stream.
+* **`refreshLocationJob`** (`SafetyHomeMapRepository:287`, called from `C6649s:3242`, `C6655y:1711`) — re-subscribes to the fused-location provider; unrelated to tiles.
+* **`incidentPollingInterval`** (default **15 s**, `PollingKeys` → `IncidentPollingValue`) — consumed **only** by `BroadcastRepository` for active broadcast/video sessions (`incidentPollingValue.getIncidentPolling() * 1000` around `broadcastApi.getBroadcastInfo`). It does **not** drive the map. `[VERIFIED — only consumer]`
+
+**Bottom line:** the official map does **not poll** on a fixed interval. Tiles are pulled when (1) the camera settles in a new zoom band or viewport, (2) the filter state changes the URL, or (3) a cached tile passes its 60-second `max-age` during the render loop. `[VERIFIED]` that no faster mechanism exists in the app code; the exact idle-refresh cadence depends on Mapbox's render/update scheduling (inference: continuous rendering → ~60 s effective freshness; no explicit timer either way).
 
 ### 8.2 Incident detail — `sp0n.citizen.data.incident.IncidentRetrofitApi`
 
@@ -273,7 +313,8 @@ view_count
  "is_paywalled":false,"unverified_community_alert":false,"ts":"…","cs":"…"}
 ```
 * Incident IDs are Firebase-push-key style (`-P1vrxK35R7YgOyBYNo2`). `severity` ∈ {`red`,`yellow`,`grey`,…}; `lifecycle_state` ∈ {`reported`, `inactive`, …} (`state_based` is the `active_definition` value used by the app for mapIncidents).
-* Tiles are also fetched through the normal OkHttp stack by MapLibre (the `all_incidents` vector source); empty areas return `200` with a 0-byte body.
+* Tiles are fetched by the Mapbox native tile loader for the `all_incidents` vector source; empty areas return `200` with a 0-byte body. Responses carry `Cache-Control: public, max-age=60` (Varnish/Google CDN) — see §8.1.1 for how this drives refresh. `[VERIFIED live]`
+* The app appends query params to the tile URL (`C6655y.m19411r`): `incident_category` (repeatable), `incident_created_at_gte/lte` (ISO-8601, date-filter only), `limit` (per-zoom cap), `with_lifecycle_state=true`, `active_definition=state_based`. Verified live: `limit` and `incident_category` alter tile content; the two static params are no-ops on content.
 
 ### 8.4 Feed endpoints
 

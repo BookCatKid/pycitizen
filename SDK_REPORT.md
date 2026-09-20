@@ -9,7 +9,11 @@ investigation. Version: **0.1.0**.
 
 ### Geographic discovery (vector tiles)
 
-- `get_incident_markers(bbox, zoom=12, clip_to_bbox=True)` — covers a
+- `get_incident_markers(bbox, zoom=12, clip_to_bbox=True, categories=…,
+  created_gte/lte=…, limit=…, active_definition=…, with_lifecycle_state=…)` —
+  optional server-side filters mirroring the app's tile-URL params
+  (`incident_category`, `incident_created_at_gte/lte`, `limit`,
+  `active_definition`, `with_lifecycle_state`) — covers a
   bounding box with slippy-map tiles, fetches
   `GET /v1/tile/incidents/{x}/{y}/{z}.pbf` concurrently, decodes the MVT
   `incidents` layer, deduplicates markers across tile edges, and clips to
@@ -150,6 +154,12 @@ every row.
 - **Tile freshness is the only "real-time" channel.** The app refreshes
   incident data via tile refetches and status reloads; there is no public
   WebSocket/SSE/push channel for incidents. `IncidentFeed` is a poller.
+  Traced map-refresh mechanics (`research/CITIZEN_API_REPORT.md` §8.1.1):
+  the app has **no tile poll timer** — it re-sets the `all_incidents`
+  source's `tiles` URL on camera-move end and filter changes, and relies
+  on the tiles' `Cache-Control: public, max-age=60` expiry for idle
+  freshness. `incidentPollingInterval` (15 s) is broadcast-session
+  polling, not map polling.
 - **Auth-gated endpoints excluded.** Homescreen feed/mapIncidents,
   `v1/search`, friends, `variable_settings`, user endpoints, and all
   mutations require a user token (phone-OTP). The WebSocket returns

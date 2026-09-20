@@ -268,8 +268,10 @@ class CitizenClient:
         except ValueError as exc:
             raise CitizenParseError(f"GET {path} returned invalid JSON") from exc
 
-    async def _get_bytes(self, path: str) -> bytes:
-        _, body, _ = await self._request("GET", path)
+    async def _get_bytes(
+        self, path: str, params: dict[str, Any] | None = None
+    ) -> bytes:
+        _, body, _ = await self._request("GET", path, params=params)
         return body
 
     # ------------------------------------------------------------------
@@ -330,6 +332,7 @@ class CitizenClient:
         layer_name: str,
         bbox: BBox,
         zoom: int,
+        params: dict[str, Any] | None = None,
     ) -> list[tuple[dict[str, Any], Position | None, tuple[int, int, int]]]:
         """Fetch and decode every feature of ``layer_name`` in a bbox.
 
@@ -343,7 +346,9 @@ class CitizenClient:
             z: int, x: int, y: int
         ) -> list[tuple[dict[str, Any], Position | None, tuple[int, int, int]]]:
             try:
-                data = await self._get_bytes(endpoint_template.format(x=x, y=y, z=z))
+                data = await self._get_bytes(
+                    endpoint_template.format(x=x, y=y, z=z), params=params
+                )
             except CitizenNotFoundError:
                 return []  # tiles with no coverage may 404; treat as empty
             except (CitizenTimeoutError, CitizenConnectionError):
@@ -380,15 +385,47 @@ class CitizenClient:
         *,
         zoom: int = DEFAULT_TILE_ZOOM,
         clip_to_bbox: bool = True,
+        categories: list[str] | None = None,
+        created_gte: datetime | str | None = None,
+        created_lte: datetime | str | None = None,
+        limit: int | None = None,
+        active_definition: str | None = None,
+        with_lifecycle_state: bool | None = None,
     ) -> list[IncidentMarker]:
         """Fetch all live incident markers in a bbox via vector tiles.
 
         One request per covering tile (concurrency-bounded). Markers are
         deduplicated across tile edges and, when ``clip_to_bbox`` is set,
         filtered to the requested bounding box. Sorted newest-first.
+
+        Optional filters mirror the query parameters the official app
+        appends to the tile URL (verified functional server-side):
+        ``incident_category`` (repeatable), ``incident_created_at_gte/lte``
+        (ISO-8601, from ``datetime`` or string), ``limit`` (per-tile cap),
+        ``active_definition`` (the app sends ``"state_based"``) and
+        ``with_lifecycle_state`` (the app sends ``"true"``).
         """
+        params: dict[str, Any] = {}
+        if categories:
+            params["incident_category"] = list(categories)
+        if created_gte is not None:
+            params["incident_created_at_gte"] = _iso(created_gte)
+        if created_lte is not None:
+            params["incident_created_at_lte"] = _iso(created_lte)
+        if limit is not None:
+            params["limit"] = limit
+        if active_definition is not None:
+            params["active_definition"] = active_definition
+        if with_lifecycle_state is not None:
+            params["with_lifecycle_state"] = (
+                "true" if with_lifecycle_state else "false"
+            )
         features = await self._tile_features(
-            ENDPOINT_INCIDENT_TILE, INCIDENTS_LAYER_NAME, bbox, zoom
+            ENDPOINT_INCIDENT_TILE,
+            INCIDENTS_LAYER_NAME,
+            bbox,
+            zoom,
+            params=params or None,
         )
         seen: dict[str, IncidentMarker] = {}
         for props, fallback, tile_coords in features:
@@ -747,3 +784,11 @@ class CitizenClient:
 
 
 _EPOCH = datetime.fromtimestamp(0, tz=UTC)
+
+
+def _iso(value: datetime | str) -> str:
+    if isinstance(value, datetime):
+        if value.tzinfo is None:
+            value = value.replace(tzinfo=UTC)
+        return value.isoformat()
+    return value

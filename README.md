@@ -77,7 +77,7 @@ async with CitizenClient() as client:
 | `get_variable_settings()` | `GET /v1/variable_settings_anonymous` | remote config flags |
 | `get_status(lat, lon)` | `GET /v1/homescreen/status` | service-area info for a point |
 | `get_service_areas(bbox)` | `GET /v1/homescreen/mapExplore` | service-area codes for a bbox |
-| `get_incident_markers(bbox, zoom=12)` | `GET /v1/tile/incidents/{x}/{y}/{z}.pbf` | the discovery workhorse |
+| `get_incident_markers(bbox, zoom=12, categories=…, created_gte/lte=…, limit=…, active_definition=…)` | `GET /v1/tile/incidents/{x}/{y}/{z}.pbf` | the discovery workhorse; optional filters mirror the app's tile-URL params |
 | `get_historical_incidents(bbox, zoom)` | `GET /v1/tile/historical_incidents/{x}/{y}/{z}.pbf` | past-window incidents |
 | `get_offender_markers(bbox, zoom)` | `GET /v1/tile/offenders/{x}/{y}/{z}.pbf` | offender registry layer |
 | `get_places(bbox, zoom)` | `GET /v1/tile/places/{x}/{y}/{z}.pbf` | OSM place labels |

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
+
 import aiohttp
 import pytest
 
@@ -195,6 +197,36 @@ async def test_get_incident_markers_no_clip(client_factory, tile_bytes) -> None:
 async def test_get_incident_markers_tile_404(client_factory) -> None:
     client = client_factory({})  # default route -> 404
     assert await client.get_incident_markers(BBOX, zoom=12) == []
+
+
+async def test_get_incident_markers_filter_params(client_factory, tile_bytes) -> None:
+    """App-matched tile query params are passed through to every tile."""
+    client = client_factory({"v1/tile/incidents/*": tile_bytes})
+    await client.get_incident_markers(
+        BBOX,
+        zoom=12,
+        categories=["fire_related", "collision"],
+        created_gte=datetime(2026, 9, 19, tzinfo=UTC),
+        created_lte="2026-09-20T00:00:00+00:00",
+        limit=200,
+        active_definition="state_based",
+        with_lifecycle_state=True,
+    )
+    _, _, params = client._session.requests[0]
+    assert params["incident_category"] == ["fire_related", "collision"]
+    assert params["incident_created_at_gte"] == "2026-09-19T00:00:00+00:00"
+    assert params["incident_created_at_lte"] == "2026-09-20T00:00:00+00:00"
+    assert params["limit"] == 200
+    assert params["active_definition"] == "state_based"
+    assert params["with_lifecycle_state"] == "true"
+
+
+async def test_get_incident_markers_no_params_by_default(
+    client_factory, tile_bytes
+) -> None:
+    client = client_factory({"v1/tile/incidents/*": tile_bytes})
+    await client.get_incident_markers(BBOX, zoom=12)
+    assert client._session.requests[0][2] == {}
 
 
 # ---------------------------------------------------------------------------
