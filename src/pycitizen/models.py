@@ -880,7 +880,8 @@ class NeighborhoodBoundary:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> NeighborhoodBoundary:
-        geometry = data.get("geometry") if isinstance(data.get("geometry"), dict) else data
+        raw_geometry = data.get("geometry")
+        geometry = raw_geometry if isinstance(raw_geometry, dict) else data
         return cls(
             type=geometry.get("type"),
             coordinates=geometry.get("coordinates") or [],
@@ -903,6 +904,7 @@ class NeighborhoodDetails:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> NeighborhoodDetails:
+        raw_stats = data.get("stats")
         return cls(
             name=data.get("name"),
             crime_level=data.get("crimeLevel"),
@@ -910,7 +912,11 @@ class NeighborhoodDetails:
             source=data.get("source"),
             last_updated=data.get("lastUpdated"),
             stats_lookback_days=_int(data.get("statsLookbackPeriodInDays")),
-            stats=data.get("stats") if isinstance(data.get("stats"), list) else [],
+            stats=(
+                [s for s in raw_stats if isinstance(s, dict)]
+                if isinstance(raw_stats, list)
+                else []
+            ),
             raw=data,
         )
 

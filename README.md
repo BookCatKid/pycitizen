@@ -1,5 +1,11 @@
 # pycitizen
 
+[![CI](https://github.com/BookCatKid/pycitizen/actions/workflows/ci.yml/badge.svg)](https://github.com/BookCatKid/pycitizen/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/pycitizen.svg)](https://pypi.org/project/pycitizen/)
+[![Python](https://img.shields.io/pypi/pyversions/pycitizen.svg)](https://pypi.org/project/pycitizen/)
+[![License](https://img.shields.io/pypi/l/pycitizen.svg)](https://github.com/BookCatKid/pycitizen/blob/main/LICENSE)
+[![Typed](https://img.shields.io/badge/typed-mypy%20strict-blue.svg)](https://mypy-lang.org/)
+
 Async-first Python SDK for [Citizen](https://citizen.com)'s **public, unauthenticated** incident API — geographic incident discovery via vector tiles, incident details, batch retrieval, related incidents, news feeds, and read-only chat history.
 
 Reverse-engineered from Citizen Android `0.1308.0` (`sp0n.citizen`, build 1140). Every endpoint implemented here was verified reachable without an access token.
@@ -147,7 +153,9 @@ Inject an existing session (e.g. Home Assistant's shared one) with `CitizenClien
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 pytest            # fully offline test suite
-python -m build   # sdist + wheel
+ruff check src tests   # lint
+mypy            # strict type check (8 modules, zero errors)
+python -m build # sdist + wheel
 ```
 
 The test suite never touches the network: HTTP is stubbed and the vector-tile path is exercised against a real tile captured from the live API (`tests/fixtures/incidents_tile.pbf`).
